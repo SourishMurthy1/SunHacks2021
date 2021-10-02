@@ -7,11 +7,25 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ReceiptRoundedIcon from '@mui/icons-material/ReceiptRounded';
 import AutoGraphRoundedIcon from '@mui/icons-material/AutoGraphRounded';
 import LiveTvRoundedIcon from '@mui/icons-material/LiveTvRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  status: {
+    danger: '#e53e3e',
+  },
+  palette: {
+    menu:{
+        main:'#ffffff'
+    }
+  },
+});
 
 const MaterialUIDrawer = (props) => {
     
@@ -41,9 +55,17 @@ const MaterialUIDrawer = (props) => {
 
     return ( 
         <React.Fragment>
-            <Button onClick={() => setOpen(true)}>
-                <MenuRoundedIcon/>
-            </Button>
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar position="static">
+                    <Toolbar>
+                        <ThemeProvider theme={theme}>
+                            <Button color="menu" onClick={() => setOpen(true)}>
+                                <MenuRoundedIcon/>
+                            </Button>
+                        </ThemeProvider>
+                    </Toolbar>
+                </AppBar>
+            </Box>
             <Drawer
                 variant="temporary"
                 open={open}
