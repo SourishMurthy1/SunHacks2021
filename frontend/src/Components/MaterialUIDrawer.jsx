@@ -15,6 +15,8 @@ import AutoGraphRoundedIcon from '@mui/icons-material/AutoGraphRounded';
 import LiveTvRoundedIcon from '@mui/icons-material/LiveTvRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { MaterialUIDropzone } from '.';
+import axios from 'axios'
 
 const theme = createTheme({
   status: {
@@ -30,6 +32,74 @@ const theme = createTheme({
 const MaterialUIDrawer = (props) => {
     
     const [open,setOpen] = useState(false)
+
+    async function audioToBase64(audioFile) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onerror = reject;
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(audioFile);
+        });
+    }
+
+    async function getData(audioFile){
+
+        const base64File = await audioToBase64(audioFile)
+        let binary = atob(base64File.split(",")[1]);
+        let array = [];
+        for (var i = 0; i < binary.length; i++) {
+          array.push(binary.charCodeAt(i));
+        }
+        let blobData = new Blob([new Uint8Array(array)], {
+          type: 'audio/mpeg'
+        });
+        
+        return blobData
+    }
+
+    const addFile = async (file) => {
+        
+        const fileName = file.name
+        const fileType = file.type
+        var signedRequest;
+        var uploadURL;
+        var options = {
+            headers: {
+            'Content-Type': fileType,
+            }
+        };
+        axios.post("http://localhost:3003/sign_s3",{
+            fileName, //parameter 1
+            fileType  //parameter 2
+        })
+        .then(response => {
+            var returnData = response.data.data.returnData;
+            signedRequest = returnData.signedRequest;
+            uploadURL = returnData.url;
+            var url = returnData.url;
+        })
+
+        const encodedFile = await getData(file)
+
+        axios.put(signedRequest,encodedFile,options)
+        .then(result => {
+            alert("audio uploaded")
+            axios.post("http://localhost:3003/trans",{
+                audio_url:uploadURL
+            })
+            .then(result => {
+                console.log("successful")
+            })
+            .catch(error => {
+                console.log("error :- ",error)
+            })
+        })
+        .catch(error => {
+            alert("ERROR " + JSON.stringify(error));
+            })
+
+    }
+
 
     const list = () => {
         return <Box
@@ -62,6 +132,7 @@ const MaterialUIDrawer = (props) => {
                             <Button color="menu" onClick={() => setOpen(true)}>
                                 <MenuRoundedIcon/>
                             </Button>
+                            <MaterialUIDropzone onSave={addFile}/>
                         </ThemeProvider>
                     </Toolbar>
                 </AppBar>
