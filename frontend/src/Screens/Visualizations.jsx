@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 const Visualizations = (props) => {
     return ( 
-        <h1>Visualizations</h1>
+        <h1 style={{textAlign: 'center'}}>Visualizations</h1>
      );
 }
  
