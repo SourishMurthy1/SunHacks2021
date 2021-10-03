@@ -15,7 +15,7 @@ const Transcripts = (props) => {
                         <DiolougeBox name='Topics' />
                     </div>
                     <div style={{ paddingRight: '10px' }}>
-                        <DiolougeBox name='Transcript'/>
+                        <DiolougeBox name='Trancript'/>
                     </div>
                 </div>
             </div>

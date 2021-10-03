@@ -10,7 +10,7 @@ const LiveTranscript = (props) => {
             </div>
             <div>
                 <textarea style={{paddingLeft: "10px", paddingTop: "10px", width: "1250px", height: "700px"}}>
-                    This is simple textarea
+                    
                 </textarea>
             </div>
         </div>
