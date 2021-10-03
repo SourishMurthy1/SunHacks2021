@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { FilePicker } from 'react-file-picker'
 import ActionCards from '../Components/ScriptCards';
 import {MaterialUIDropzone} from '../Components'
-const https = require('https')
 const axios = require('axios')
 
 const Home = (props) => {
+
+    const [transcription,setTranscription] = useState({})
+    const [status,setStatus] = useState(false)
 
     const transoptions = {
         hostname: 'localhost',
@@ -103,6 +105,21 @@ const Home = (props) => {
         //   })
           
         //   req.end()
+        axios.get("http://localhost:3003/poll")
+        .then(res => {
+            if(res.ok){
+                return res.json()
+            }
+            else{
+                return null
+            }
+        })
+        .then(res => {
+            if(res.status == "completed"){
+                setStatus(true)
+                setTranscription(res)
+            }
+        })
     }
 
 return (
