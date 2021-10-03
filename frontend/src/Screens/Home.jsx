@@ -64,9 +64,6 @@ const Home = (props) => {
             signedRequest = returnData.signedRequest;
             uploadURL = returnData.url;
             var url = returnData.url;
-            console.log("SIGNED REQ:- ",signedRequest)
-            console.log("UPLOAD URL:- ",url)
-           
         })
 
         const encodedFile = await getData(file)
@@ -83,14 +80,10 @@ const Home = (props) => {
             .catch(error => {
                 console.log("error :- ",error)
             })
-        }
-            
-        )
+        })
         .catch(error => {
             alert("ERROR " + JSON.stringify(error));
             })
-
-        
 
     }
 
